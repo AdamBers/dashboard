@@ -1,0 +1,14 @@
+.pageTitle {
+  margin-bottom: 40px;
+  h1 {
+    font-weight: 700;
+    font-size: 26px;
+    color: #222222;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222222;
+  }
+}

@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;700&family=Nunito:wght@400;700&display=swap");
+
+* {
+  font-family: Montserrat, Roboto, Nunito, Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #fafafa;
+  width: calc(100vw - 15px);
+}
+
+#root {
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+.main-container {
+  padding: 40px 50px;
+}
+
+button:hover {
+  filter: brightness(0.9);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
