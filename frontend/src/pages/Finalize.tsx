@@ -12,7 +12,6 @@ const Finalize: React.FC = () => {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    // Загружаем данные для финализации теста
     if (testId) {
       getTestById(testId)
         .then((data) => {
@@ -20,23 +19,16 @@ const Finalize: React.FC = () => {
           setLoading(false);
         })
         .catch((err) => {
-          setError("Error fetching test data");
+          setError(`Error fetching test data: ${err}`);
           setLoading(false);
         });
     }
   }, [testId]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
     <div className={styles.container}>
-      <PageTitle title="Finalize" subTitle={testData.name} />
+      <PageTitle title="Finalize" subTitle={loading ? "Loading ..." : testData?.name} />
+      {error && <p>{error}</p>}
       <BackButton />
     </div>
   );

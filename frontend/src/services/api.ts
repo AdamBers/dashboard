@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const apiUrl = "http://localhost:3100/tests"; // Фейковый API на JSON Server
+const BaseUrl = "http://localhost:3100";
 
-// Функция для получения всех тестов
 export const getTests = async () => {
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(`${BaseUrl}/tests`);
     return response.data;
   } catch (error) {
     console.error("Error fetching tests:", error);
@@ -13,13 +12,22 @@ export const getTests = async () => {
   }
 };
 
-// Функция для получения данных конкретного теста
 export const getTestById = async (testId: string) => {
   try {
-    const response = await axios.get(`${apiUrl}/${testId}`);
+    const response = await axios.get(`${BaseUrl}/tests/${testId}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching test with ID ${testId}:`, error);
+    throw error;
+  }
+};
+
+export const getSites = async () => {
+  try {
+    const response = await axios.get(`${BaseUrl}/sites`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching sites:", error);
     throw error;
   }
 };

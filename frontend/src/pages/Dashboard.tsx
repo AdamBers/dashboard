@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getTests } from "../services/api";
+import { getTests, getSites } from "../services/api";
 import PageTitle from "../components/PageTitle/PageTitle";
 import Search from "../components/Search/Search";
 import Table from "../components/Table/Table";
@@ -7,20 +7,27 @@ import Table from "../components/Table/Table";
 const Dashboard: React.FC = () => {
   const [tests, setTests] = useState<any[]>([]);
   const [filteredTests, setFilteredTests] = useState<any[]>([]);
+  const [sites, setSites] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<any>({ key: "", direction: "asc" });
 
   useEffect(() => {
-    getTests()
-      .then((data) => {
-        setTests(data);
-        setFilteredTests(data);
-        setLoading(false);
+    Promise.all([getTests(), getSites()])
+      .then(([testsData, sitesData]) => {
+        setSites(sitesData);
+        const enrichedTests = testsData.map((test) => ({
+          ...test,
+          siteUrl: sitesData.find((site) => site.id === test.siteId)?.url || "Unknown site",
+        }));
+        setTests(enrichedTests);
+        setFilteredTests(enrichedTests);
       })
       .catch((err) => {
-        setError("Error fetching tests");
+        setError(`Error fetching data: ${err}`);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -44,10 +51,10 @@ const Dashboard: React.FC = () => {
 
     const sorted = [...filteredTests].sort((a, b) => {
       if (key === "status") {
-        const statusOrder = ["Online", "Paused", "Stopped", "Draft"];
+        const statusOrder = ["online", "paused", "stopped", "draft"];
         return direction === "asc"
-          ? statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status)
-          : statusOrder.indexOf(b.status) - statusOrder.indexOf(a.status);
+          ? statusOrder.indexOf(a.status.toLowerCase()) - statusOrder.indexOf(b.status.toLowerCase())
+          : statusOrder.indexOf(b.status.toLowerCase()) - statusOrder.indexOf(a.status.toLowerCase());
       }
       return direction === "asc" ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
     });
@@ -55,19 +62,11 @@ const Dashboard: React.FC = () => {
     setFilteredTests(sorted);
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
     <>
-      <PageTitle title="Dashboard" subTitle="text" />
+      <PageTitle title="Dashboard" subTitle="Tests Overview" />
       <Search searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
-      <Table handleSort={handleSort} filteredTests={filteredTests} />
+      <Table handleSort={handleSort} filteredTests={filteredTests} loading={loading} error={error} />
     </>
   );
 };
