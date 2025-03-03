@@ -11,7 +11,7 @@ const BackButton = () => {
   return (
     <div className={styles.container}>
       <button onClick={handleBack} aria-label="Go back">
-        <img src="/assets/img/arrow-left.svg" alt="arrow-back" />
+        <img src="/assets/img/arrow_left.svg" alt="arrow-back" />
         Back
       </button>
     </div>

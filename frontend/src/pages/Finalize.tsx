@@ -4,10 +4,11 @@ import { getTestById } from "../services/api";
 import styles from "./Finalize.module.css";
 import PageTitle from "../components/PageTitle/PageTitle";
 import BackButton from "../components/BackButton/BackButton";
+import { ITest } from "../types";
 
 const Finalize: React.FC = () => {
   const { testId } = useParams<{ testId: string }>();
-  const [testData, setTestData] = useState<any>(null);
+  const [testData, setTestData] = useState<ITest | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 

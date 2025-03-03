@@ -1,8 +1,9 @@
 import axios from "axios";
+import { ITest, ISite } from "../types";
 
 const BaseUrl = "http://localhost:3100";
 
-export const getTests = async () => {
+export const getTests = async (): Promise<ITest[]> => {
   try {
     const response = await axios.get(`${BaseUrl}/tests`);
     return response.data;
@@ -12,7 +13,7 @@ export const getTests = async () => {
   }
 };
 
-export const getTestById = async (testId: string) => {
+export const getTestById = async (testId: string): Promise<ITest> => {
   try {
     const response = await axios.get(`${BaseUrl}/tests/${testId}`);
     return response.data;
@@ -22,7 +23,7 @@ export const getTestById = async (testId: string) => {
   }
 };
 
-export const getSites = async () => {
+export const getSites = async (): Promise<ISite[]> => {
   try {
     const response = await axios.get(`${BaseUrl}/sites`);
     return response.data;
