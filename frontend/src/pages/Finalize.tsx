@@ -28,7 +28,7 @@ const Finalize: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <PageTitle title="Finalize" subTitle={loading ? "Loading ..." : testData?.name} />
+      <PageTitle title="Finalize" subTitle={loading ? "Loading ..." : testData?.name ?? "No subTitle"} />
       {error && <p>{error}</p>}
       <BackButton />
     </div>
